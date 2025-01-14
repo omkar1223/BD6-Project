@@ -32,4 +32,18 @@ async function getAllStocks() {
   return stocks;
 }
 
-module.exports = { getAllStocks };
+async function getStocksByTicker(ticker) {
+  return stocks.find((stock) => stock.ticker === ticker);
+}
+
+async function addNewTrade(newTrade) {
+  let data = { trackId: trades.length + 1, ...newTrade };
+  trades.push(data);
+  return data;
+}
+
+async function getAllTrades() {
+  return trades;
+}
+
+module.exports = { getAllStocks, getStocksByTicker, addNewTrade, getAllTrades };
