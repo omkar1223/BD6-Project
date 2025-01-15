@@ -49,13 +49,17 @@ async function validateTrade(trade) {
 }
 
 app.post("/trade/new", async (req, res) => {
-  let newTrade = req.body;
-  let error = validateTrade(newTrade);
-  if (error) {
-    return res.status(400).send(error);
+  try {
+    let newTrade = req.body;
+    let error = await validateTrade(newTrade);
+    if (error) {
+      return res.status(400).send(error);
+    }
+    const result = await addNewTrade(newTrade);
+    res.status(200).json({ trade: result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-  const result = await addNewTrade(newTrade);
-  res.status(200).json({ trade: result });
 });
 
 app.get("/trades", async (req, res) => {
