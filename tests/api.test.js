@@ -6,6 +6,7 @@ let {
   addNewTrade,
 } = require("../controllers");
 let { app } = require("../index");
+const { describe } = require("node:test");
 
 jest.mock("../index", () => ({
   ...jest.requireActual("../index"),
@@ -77,5 +78,31 @@ describe("API error handling", () => {
     const response = await request(server).get("/stocks/ticker/UULI");
     expect(response.status).toBe(404);
     expect(response.body.message).toBe("no stock found for this id");
+  });
+
+  it("should return 400 for invalid stockId input", async () => {
+    const response = await request(server).post("/trade/new").send({
+      stockId: "omkar",
+      quantity: 15,
+      tradeType: "buy",
+      tradeDate: "2024-08-08",
+    });
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("stockId is required and must be a number");
+  });
+});
+
+describe("Mock function testing", () => {
+  it("should return the new trade data", async () => {
+    const mockTrade = {
+      stockId: 1,
+      quantity: 15,
+      tradeType: "buy",
+      tradeDate: "2024-08-08",
+    };
+    addNewTrade.mockReturnValue(mockTrade);
+    const result = await addNewTrade(mockTrade);
+    expect(result).toEqual(mockTrade);
+    expect(addNewTrade).toHaveBeenCalledWith(mockTrade);
   });
 });
