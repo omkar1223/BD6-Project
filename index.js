@@ -46,6 +46,8 @@ async function validateTrade(trade) {
   if (!trade.tradeDate || typeof trade.tradeDate !== "string") {
     return "tradeDate is required and must be a string";
   }
+
+  return null;
 }
 
 app.post("/trade/new", async (req, res) => {

@@ -99,7 +99,8 @@ describe("Mock function testing", () => {
       tradeType: "buy",
       tradeDate: "2024-08-08",
     };
-    addNewTrade = jest.fn().mockReturnValue(mockTrade);
+    // Mock the addNewTrade function
+    addNewTrade.mockReturnValue(mockTrade);
     const result = await addNewTrade(mockTrade);
     expect(result).toEqual(mockTrade);
     expect(addNewTrade).toHaveBeenCalledWith(mockTrade);
