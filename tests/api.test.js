@@ -55,8 +55,8 @@ describe("API endpoint test", () => {
     });
   });
 
-  it("POST /trade/new - new trade", () => {
-    const response = request(server).post("/trade/new").send({
+  it("POST /trade/new - new trade", async () => {
+    const response = await request(server).post("/trade/new").send({
       stockId: 1,
       quantity: 15,
       tradeType: "buy",

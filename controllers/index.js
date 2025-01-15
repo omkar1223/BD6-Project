@@ -37,7 +37,7 @@ async function getStocksByTicker(ticker) {
 }
 
 async function addNewTrade(newTrade) {
-  let data = { trackId: trades.length + 1, ...newTrade };
+  let data = { tradeId: trades.length + 1, ...newTrade };
   trades.push(data);
   return data;
 }

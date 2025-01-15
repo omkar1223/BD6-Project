@@ -27,9 +27,9 @@ app.get("/stocks/ticker/:ticker", async (req, res) => {
   }
 });
 
-app.post("/trade/new", (req, res) => {
+app.post("/trade/new", async (req, res) => {
   let newTrade = req.body;
-  const result = addNewTrade(newTrade);
+  const result = await addNewTrade(newTrade);
   res.status(200).json({ trade: result });
 });
 
