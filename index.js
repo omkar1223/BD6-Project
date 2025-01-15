@@ -18,7 +18,7 @@ app.get("/stocks/ticker/:ticker", async (req, res) => {
   try {
     const ticker = req.params.ticker;
     const result = await getStocksByTicker(ticker);
-    if (result === null) {
+    if (!result) {
       return res.status(404).json({ message: "no stock found for this id" });
     }
     res.status(200).json({ stock: result });
@@ -27,8 +27,33 @@ app.get("/stocks/ticker/:ticker", async (req, res) => {
   }
 });
 
+/*app.post("/trade/new", async (req, res) => {
+  let newTrade = req.body;
+  const result = await addNewTrade(newTrade);
+  res.status(200).json({ trade: result });
+});*/
+
+async function validateTrade(trade) {
+  if (!trade.stockId || typeof trade.stockId !== "number") {
+    return "stockId is required and must be a number";
+  }
+  if (!trade.quantity || typeof trade.quantity !== "number") {
+    return "quantity is required and must be a number";
+  }
+  if (!trade.tradeType || typeof trade.tradeType !== "string") {
+    return "tradeType is required and must be a string";
+  }
+  if (!trade.tradeDate || typeof trade.tradeDate !== "string") {
+    return "tradeDate is required and must be a string";
+  }
+}
+
 app.post("/trade/new", async (req, res) => {
   let newTrade = req.body;
+  let error = validateTrade(newTrade);
+  if (error) {
+    return res.status(400).send(error);
+  }
   const result = await addNewTrade(newTrade);
   res.status(200).json({ trade: result });
 });

@@ -72,3 +72,10 @@ describe("API endpoint test", () => {
     });
   });
 });
+describe("API error handling", () => {
+  it("should return 404 for invalid ticker", async () => {
+    const response = await request(server).get("/stocks/ticker/UULI");
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("no stock found for this id");
+  });
+});
